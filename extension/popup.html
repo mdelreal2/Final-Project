@@ -1,0 +1,47 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <script src="popup.js"></script>
+    <title>Getting Started Extension's Popup</title>
+    <style type="text/css">
+      body {
+        margin: 10px;
+        white-space: nowrap;
+      }
+
+      h1 {
+        font-size: 15px;
+      }
+
+      #container {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+
+    <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    -->
+    
+  </head>
+
+  <body>
+    <h2>Selected Text</h2>
+    <h1>Copy and paste the selected text below</h1>
+    <div id="container">
+        <p>
+            <textarea rows="29" cols="50"></textarea>    
+        </p>        
+    </div>
+    <input id = "ok_button" type="button" value="OK">
+  </body>
+</html>
