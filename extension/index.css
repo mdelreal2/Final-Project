@@ -198,6 +198,14 @@ div.speed_reader_output_container {
     z-index: 1;
 }
 
+textarea.speed_reader_output_textarea {
+    resize: none;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .1);
+    border: 1px solid rgba(0, 0, 0, .5);
+}
+
 /*
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 stylings for things inside the speed read features container

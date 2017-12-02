@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
   
-    "name": "Getting started example",
+    "name": "Final Project",
     "description": "This extension allows the user to select text and open it up in a new tab that allows the user to be able to increase readability or speed read.",
     "version": "1.0",
   

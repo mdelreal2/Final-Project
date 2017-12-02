@@ -10,18 +10,17 @@
  */
 function handler()
 {
-    alert("works");
+    var inputTextarea = document.getElementById("_input_textarea");
+    var input = inputTextarea.value;
+
+    localStorage.setItem("userInput", JSON.stringify(input));
+    
+    chrome.tabs.create({url: "index.html"});
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-    document.getElementById("ok_button").addEventListener("click", handler);
+    document.getElementById("_ok_button").addEventListener("click", handler);
 });
-
-//   var okbutton = document.getElementById("link");  
-//   okbutton.addEventListener('DOMContentLoaded',"click", function(){
-//     alert("ALERTTTTTTTT");
-//   });
-// }
 
 function getCurrentTabUrl(callback) {
   // Query filter to be passed to chrome.tabs.query - see

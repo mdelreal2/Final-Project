@@ -1,3 +1,5 @@
+var changedSettingMap = {};
+
 function loadModalSettingsContainerReadability()
 {
     //modal container
@@ -20,6 +22,24 @@ function loadModalSettingsContainerReadability()
     applySettingsButton.className = "apply_settings_button";
     applySettingsButton.style.className = "input.apply_settings_button";
 
+    applySettingsButton.addEventListener("click", function(){
+        var arrayOfStyles = Object.keys(changedSettingMap);
+        var outputTextarea = document.getElementById("_output_textarea");
+        for (var i = 0; i < arrayOfStyles.length; i++)
+        {
+            //instead of having the 'changedSettingMap' have keys of the same element on the document,
+            //it is now given string versions of namespaces that the settings will aim to change and values
+            //are set to what the setting will be set to. In js you can call methods and access namespace variables 
+            //through the following syntax which is used to dynamically set all of the settings the user changed
+            outputTextarea["style"][arrayOfStyles[i]] = changedSettingMap[arrayOfStyles[i]];
+                //as opposed to a static namespace access of outputTextarea.style.fontFamily = changedSettingMap[arrayOfStyles[i]];
+            //where we would need as many lines like the one above for each possible setting and would have no efficient way of 
+            //only having certain static namespaces be called. With the user possibly only wanting 1 or no changes and having to 
+            //reset all of the settings.
+        }
+        //reset the map of all the settings that needed to be changed so they can't be changed unless the user wants to again
+        delete changedSettingMap;
+    });
 ///////////////////////////////////////////////////////////////////////////////////////
 
     //font label
@@ -35,6 +55,12 @@ function loadModalSettingsContainerReadability()
     textFontSettingDropdown.className = "settings_dropdown text_font_setting_dropdown";
     textFontSettingDropdown.style.className = "select.settings_dropdown";
 
+    textFontSettingDropdown.addEventListener("change", function(){
+        var value = textFontSettingDropdown.value;
+        userSettings.readabilityFont = value;
+        changedSettingMap["fontFamily"] = value;
+    });
+  
     //font1
     var arialFont = document.createElement("option");
     arialFont.value = "Arial";
@@ -46,9 +72,9 @@ function loadModalSettingsContainerReadability()
     helveticaFont.innerHTML = "Helvetica";
 
     //font3
-    var timesnewromanfont = document.createElement("option");
-    timesnewromanfont.value = "Times New Roman";
-    timesnewromanfont.innerHTML = "Times New Roman";
+    var timesnewromanFont = document.createElement("option");
+    timesnewromanFont.value = "Times New Roman";
+    timesnewromanFont.innerHTML = "Times New Roman";
 
     //font4
     var verdanaFont = document.createElement("option");
@@ -74,35 +100,41 @@ function loadModalSettingsContainerReadability()
     textFontSizeSettingDropdown.id = "_text_font_size_setting_dropdown";
     textFontSizeSettingDropdown.className = "settings_dropdown text_font_size_setting_dropdown";
     textFontSizeSettingDropdown.style.className = "select.settings_dropdown";
+  
+    textFontSizeSettingDropdown.addEventListener("change", function(){
+        var value = textFontSizeSettingDropdown.value;
+        userSettings.readabilityFontSize = value;
+        changedSettingMap["fontSize"] = value;
+    });
 
     //font size 1
     var tenFont = document.createElement("option");
-    tenFont.value = "10";
+    tenFont.value = "10px";
     tenFont.innerHTML = "10";
 
     //font size 2
     var twelveFont = document.createElement("option");
-    twelveFont.value = "12";
+    twelveFont.value = "12px";
     twelveFont.innerHTML = "12";
 
     //font size 3
     var fourteenFont = document.createElement("option");
-    fourteenFont.value = "14";
+    fourteenFont.value = "14px";
     fourteenFont.innerHTML = "14";
 
     //font size 4
     var eighteenFont = document.createElement("option");
-    eighteenFont.value = "18";
+    eighteenFont.value = "18px";
     eighteenFont.innerHTML = "18";
 
     //font size 5
     var twentyFont = document.createElement("option");
-    twentyFont.value = "20";
+    twentyFont.value = "20px";
     twentyFont.innerHTML = "20";
 
     //font size 6
     var twentyfourFont = document.createElement("option");
-    twentyfourFont.value = "24";
+    twentyfourFont.value = "24px";
     twentyfourFont.innerHTML = "24";
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -119,6 +151,12 @@ function loadModalSettingsContainerReadability()
     textColorSettingDropdown.id = "_text_color_setting_dropdown";
     textColorSettingDropdown.className = "settings_dropdown text_color_setting_dropdown";
     textColorSettingDropdown.style.className = "select.settings_dropdown";
+  
+    textColorSettingDropdown.addEventListener("change", function(){
+        var value = textColorSettingDropdown.value;
+        userSettings.readabilityTextColor = value;
+        changedSettingMap["color"] = value;
+    });
 
     //text color 1
     var textColorBlack = document.createElement("option");
@@ -149,6 +187,12 @@ function loadModalSettingsContainerReadability()
     backgroundColorSettingDropdown.id = "_background_color_setting_dropdown";
     backgroundColorSettingDropdown.className = "settings_dropdown background_color_setting_dropdown";
     backgroundColorSettingDropdown.style.className = "select.settings_dropdown";
+  
+    backgroundColorSettingDropdown.addEventListener("change", function(){
+        var value = backgroundColorSettingDropdown.value;
+        userSettings.readabilityBackgroundColor = value;
+        changedSettingMap["backgroundColor"] = value;
+    });
 
     //background color 1
     var backgroundColorBlack = document.createElement("option");
@@ -179,6 +223,12 @@ function loadModalSettingsContainerReadability()
     lineSpacingSettingDropdown.id = "_background_color_setting_dropdown";
     lineSpacingSettingDropdown.className = "settings_dropdown line_spacing_setting_dropdown";
     lineSpacingSettingDropdown.style.className = "select.settings_dropdown";
+  
+    lineSpacingSettingDropdown.addEventListener("change", function(){
+        var value = lineSpacingSettingDropdown.value;
+        userSettings.readabilityLineSpacing = value;
+        changedSettingMap["lineHeight"] = value;
+    });
 
     //line spacing 1
     var lineSpacingOne = document.createElement("option");
@@ -215,6 +265,11 @@ function loadModalSettingsContainerReadability()
     toggleHotkeysSettingCheckbox.id = "_toggle_hot_keys_checkbox";
     toggleHotkeysSettingCheckbox.className = "toggle_hot_keys_checkbox";
     toggleHotkeysSettingCheckbox.style.className = "input.toggle_hot_keys_checkbox";
+    toggleHotkeysSettingCheckbox.addEventListener("change", function(){
+        var value = toggleHotkeysSettingCheckbox.checked;
+        userSettings.readabilityToggleHotkeys = value;
+        //doesn't affect anything in the textarea ouput so we won't put it into the changedSettingMap
+    });
 
     //modal container
     document.getElementsByTagName("body")[0].appendChild(modalSettingsContainer);
@@ -232,9 +287,11 @@ function loadModalSettingsContainerReadability()
     modalSettingsContent.appendChild(textFontSettingDropdown);
     textFontSettingDropdown.appendChild(arialFont);
     textFontSettingDropdown.appendChild(helveticaFont);
-    textFontSettingDropdown.appendChild(timesnewromanfont);
+    textFontSettingDropdown.appendChild(timesnewromanFont);
     textFontSettingDropdown.appendChild(verdanaFont);
     textFontSettingDropdown.appendChild(courierFont);
+    //setting initial value
+    textFontSettingDropdown.value = userSettings.readabilityFont;
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
@@ -248,6 +305,8 @@ function loadModalSettingsContainerReadability()
     textFontSizeSettingDropdown.appendChild(eighteenFont);
     textFontSizeSettingDropdown.appendChild(twentyFont);
     textFontSizeSettingDropdown.appendChild(twentyfourFont);
+    //setting initial value
+    textFontSizeSettingDropdown.value = userSettings.readabilityFontSize;
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
@@ -258,6 +317,8 @@ function loadModalSettingsContainerReadability()
     textColorSettingDropdown.appendChild(textColorBlack);
     textColorSettingDropdown.appendChild(textColorGrey);
     textColorSettingDropdown.appendChild(textColorWhite);
+    //setting initial value
+    backgroundColorSettingDropdown.value = userSettings.readabilityTextColor;
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
@@ -268,6 +329,8 @@ function loadModalSettingsContainerReadability()
     backgroundColorSettingDropdown.appendChild(backgroundColorBlack);
     backgroundColorSettingDropdown.appendChild(backgroundColorGrey);
     backgroundColorSettingDropdown.appendChild(backgroundColorWhite);
+    //setting initial value
+    backgroundColorSettingDropdown.value = userSettings.readabilityBackgroundColor;
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
@@ -279,6 +342,8 @@ function loadModalSettingsContainerReadability()
     lineSpacingSettingDropdown.appendChild(lineSpacingOnePointFive);
     lineSpacingSettingDropdown.appendChild(lineSpacingTwo);
     lineSpacingSettingDropdown.appendChild(lineSpacingThree);
+    //setting initial value
+    lineSpacingSettingDropdown.value = userSettings.readabilityLineSpacing;
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
@@ -289,6 +354,8 @@ function loadModalSettingsContainerReadability()
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
+    //setting initial value
+    toggleHotkeysSettingCheckbox.checked = userSettings.readabilityToggleHotkeys;
 }
 
 function loadModalSettingsContainerSpeedReader()
@@ -312,6 +379,16 @@ function loadModalSettingsContainerSpeedReader()
     applySettingsButton.id = "_apply_settings_button";
     applySettingsButton.className = "apply_settings_button";
     applySettingsButton.style.className = "input.apply_settings_button";
+    applySettingsButton.addEventListener("click", function(){
+        var arrayOfStyles = Object.keys(changedSettingMap);
+        var speedReaderOutputTextarea = document.getElementById("_speed_reader_output_textarea");
+        for (var i = 0; i < arrayOfStyles.length; i++)
+        {
+            speedReaderOutputTextarea["style"][arrayOfStyles[i]] = changedSettingMap[arrayOfStyles[i]];
+        }
+        //reset the map of all the settings that needed to be changed so they can't be changed unless the user wants to again
+        delete changedSettingMap;
+    });
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -327,6 +404,11 @@ function loadModalSettingsContainerSpeedReader()
     textFontSettingDropdown.id = "_text_font_setting_dropdown";
     textFontSettingDropdown.className = "settings_dropdown text_font_setting_dropdown";
     textFontSettingDropdown.style.className = "select.settings_dropdown";
+    textFontSettingDropdown.addEventListener("change", function(){
+        var value = textFontSettingDropdown.value;
+        userSettings.speedReaderFont = value;
+        changedSettingMap["fontFamily"] = value;
+    });
 
     //font1
     var arialFont = document.createElement("option");
@@ -339,9 +421,9 @@ function loadModalSettingsContainerSpeedReader()
     helveticaFont.innerHTML = "Helvetica";
 
     //font3
-    var timesnewromanfont = document.createElement("option");
-    timesnewromanfont.value = "Times New Roman";
-    timesnewromanfont.innerHTML = "Times New Roman";
+    var timesnewromanFont = document.createElement("option");
+    timesnewromanFont.value = "Times New Roman";
+    timesnewromanFont.innerHTML = "Times New Roman";
 
     //font4
     var verdanaFont = document.createElement("option");
@@ -367,35 +449,40 @@ function loadModalSettingsContainerSpeedReader()
     textFontSizeSettingDropdown.id = "_text_font_size_setting_dropdown";
     textFontSizeSettingDropdown.className = "settings_dropdown text_font_size_setting_dropdown";
     textFontSizeSettingDropdown.style.className = "select.settings_dropdown";
+    textFontSizeSettingDropdown.addEventListener("change", function(){
+        var value = textFontSizeSettingDropdown.value;
+        userSettings.speedReaderFontSize = value;
+        changedSettingMap["fontSize"] = value
+    });
 
     //font size 1
     var tenFont = document.createElement("option");
-    tenFont.value = "10";
+    tenFont.value = "10px";
     tenFont.innerHTML = "10";
 
     //font size 2
     var twelveFont = document.createElement("option");
-    twelveFont.value = "12";
+    twelveFont.value = "12px";
     twelveFont.innerHTML = "12";
 
     //font size 3
     var fourteenFont = document.createElement("option");
-    fourteenFont.value = "14";
+    fourteenFont.value = "14px";
     fourteenFont.innerHTML = "14";
 
     //font size 4
     var eighteenFont = document.createElement("option");
-    eighteenFont.value = "18";
+    eighteenFont.value = "18px";
     eighteenFont.innerHTML = "18";
 
     //font size 5
     var twentyFont = document.createElement("option");
-    twentyFont.value = "20";
+    twentyFont.value = "20px";
     twentyFont.innerHTML = "20";
 
     //font size 6
     var twentyfourFont = document.createElement("option");
-    twentyfourFont.value = "24";
+    twentyfourFont.value = "24px";
     twentyfourFont.innerHTML = "24";
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -412,6 +499,11 @@ function loadModalSettingsContainerSpeedReader()
     textColorSettingDropdown.id = "_text_color_setting_dropdown";
     textColorSettingDropdown.className = "settings_dropdown text_color_setting_dropdown";
     textColorSettingDropdown.style.className = "select.settings_dropdown";
+    textColorSettingDropdown.addEventListener("change", function(){
+        var value = textColorSettingDropdown.value;
+        userSettings.speedReaderTextColor = value;
+        changedSettingMap["color"] = value;
+    });
 
     //text color 1
     var textColorBlack = document.createElement("option");
@@ -442,6 +534,11 @@ function loadModalSettingsContainerSpeedReader()
     backgroundColorSettingDropdown.id = "_background_color_setting_dropdown";
     backgroundColorSettingDropdown.className = "settings_dropdown background_color_setting_dropdown";
     backgroundColorSettingDropdown.style.className = "select.settings_dropdown";
+    backgroundColorSettingDropdown.addEventListener("change", function(){
+        var value = backgroundColorSettingDropdown.value;
+        userSettings.speedReaderBackgroundColor = value;
+        changedSettingMap["backgroundColor"] = value;
+    });
 
     //background color 1
     var backgroundColorBlack = document.createElement("option");
@@ -460,41 +557,6 @@ function loadModalSettingsContainerSpeedReader()
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-    //line spacing label
-    var lineSpacingSettingLabel = document.createElement("p");
-    lineSpacingSettingLabel.innerHTML = "Line Spacing";
-    lineSpacingSettingLabel.id = "_line_spacing_setting_label";
-    lineSpacingSettingLabel.className = "settings_label background_color_setting_label";
-    lineSpacingSettingLabel.style.className = "p.settings_label";
-
-    //line spacing dropdown
-    var lineSpacingSettingDropdown = document.createElement("select");
-    lineSpacingSettingDropdown.id = "_background_color_setting_dropdown";
-    lineSpacingSettingDropdown.className = "settings_dropdown line_spacing_setting_dropdown";
-    lineSpacingSettingDropdown.style.className = "select.settings_dropdown";
-
-    //line spacing 1
-    var lineSpacingOne = document.createElement("option");
-    lineSpacingOne.value = "1.0";
-    lineSpacingOne.innerHTML = "1.0";
-
-    //line spacing 2
-    var lineSpacingOnePointFive = document.createElement("option");
-    lineSpacingOnePointFive.value = "1.5";
-    lineSpacingOnePointFive.innerHTML = "1.5";
-
-    //line spacing 3
-    var lineSpacingTwo = document.createElement("option");
-    lineSpacingTwo.value = "2.0";
-    lineSpacingTwo.innerHTML = "2.0";
-
-    //line spacing 4
-    var lineSpacingThree = document.createElement("option");
-    lineSpacingThree.value = "3.0";
-    lineSpacingThree.innerHTML = "3.0";
-
-/////////////////////////////////////////////////////////////////////////////////////////
-
     //toggle hot keys label
     var toggleHotkeysSettingLabel = document.createElement("p");
     toggleHotkeysSettingLabel.innerHTML = "Toggle HotKeys";
@@ -508,6 +570,11 @@ function loadModalSettingsContainerSpeedReader()
     toggleHotkeysSettingCheckbox.id = "_toggle_hot_keys_checkbox";
     toggleHotkeysSettingCheckbox.className = "toggle_hot_keys_checkbox";
     toggleHotkeysSettingCheckbox.style.className = "input.toggle_hot_keys_checkbox";
+    toggleHotkeysSettingCheckbox.addEventListener("change", function(){
+        var value = toggleHotkeysSettingCheckbox.checked;
+        userSettings.speedReaderToggleHotkeys = value;
+        //doesn't affect anything in the textarea ouput so we won't put it into the changedSettingMap
+    });
 
     //modal container
     document.getElementsByTagName("body")[0].appendChild(modalSettingsContainer);
@@ -525,9 +592,11 @@ function loadModalSettingsContainerSpeedReader()
     modalSettingsContent.appendChild(textFontSettingDropdown);
     textFontSettingDropdown.appendChild(arialFont);
     textFontSettingDropdown.appendChild(helveticaFont);
-    textFontSettingDropdown.appendChild(timesnewromanfont);
+    textFontSettingDropdown.appendChild(timesnewromanFont);
     textFontSettingDropdown.appendChild(verdanaFont);
     textFontSettingDropdown.appendChild(courierFont);
+    //setting initial value
+    textFontSettingDropdown.value = userSettings.speedReaderFont;
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
@@ -541,6 +610,8 @@ function loadModalSettingsContainerSpeedReader()
     textFontSizeSettingDropdown.appendChild(eighteenFont);
     textFontSizeSettingDropdown.appendChild(twentyFont);
     textFontSizeSettingDropdown.appendChild(twentyfourFont);
+    //setting initial value
+    textFontSizeSettingDropdown.value = userSettings.speedReaderFontSize;
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
@@ -551,6 +622,8 @@ function loadModalSettingsContainerSpeedReader()
     textColorSettingDropdown.appendChild(textColorBlack);
     textColorSettingDropdown.appendChild(textColorGrey);
     textColorSettingDropdown.appendChild(textColorWhite);
+    //setting initial value
+    textColorSettingDropdown.value = userSettings.speedReaderTextColor;
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
@@ -561,6 +634,8 @@ function loadModalSettingsContainerSpeedReader()
     backgroundColorSettingDropdown.appendChild(backgroundColorBlack);
     backgroundColorSettingDropdown.appendChild(backgroundColorGrey);
     backgroundColorSettingDropdown.appendChild(backgroundColorWhite);
+    //setting initial value
+    backgroundColorSettingDropdown.value = userSettings.speedReaderBackgroundColor;
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
@@ -568,6 +643,8 @@ function loadModalSettingsContainerSpeedReader()
     //toggle hot keys
     modalSettingsContent.appendChild(toggleHotkeysSettingLabel);
     modalSettingsContent.appendChild(toggleHotkeysSettingCheckbox);
+    //setting initial value
+    toggleHotkeysSettingCheckbox.value = userSettings.speedReaderToggleHotkeys;
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));

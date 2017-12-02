@@ -3,13 +3,39 @@ const READABILITY = "READABILITY";
 const SPEED_READER = "SPEED_READER";
 
 var userSettings = {
+    readabilityLineNumber: 0,
+    readabilityFont: "Arial",
+    readabilityFontSize: "12px",
+    readabilityTextColor: "Black",
+    readabilityBackgroundColor: "Grey",
+    readabilityLineSpacing: "1.0",
+    readabilityToggleHotkeys: false,
+    readabilityPastWordMapping: 37,
+    readabilityNextWordMapping: 39,
+    readabilityPastLineMapping: 38,
+    readabilityNextLineMapping: 40,
+    
     speedReaderWPM: 400,
-    readabilityLineNumber: 0
+    speedReaderWordNumber: 0,
+    speedReaderFont: "Arial",
+    speedReaderFontSize: "24px",
+    speedReaderTextColor: "White",
+    speedReaderBackgroundColor: "Black",
+    speedReaderToggleHotkeys: false,
+    speedReaderPlayAndPauseMapping: 32,
+    speedReaderResetMapping: 82,
+    speedReaderDecrementWPMMapping: 37,
+    speedReaderIncrementWPMMapping: 39 
 };
 
 //function that will be called as soon as the page loads. Will be used to set the text obtained by the user into the '_output_textarea'
 window.onload = function()
 {
+    if (localStorage.getItem("userInput") == null)
+    {
+        localStorage.setItem("userInput", JSON.stringify("Default Text"));
+    }
+
     readingState = READABILITY;
 
     loadAllElements();
