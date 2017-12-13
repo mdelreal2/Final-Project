@@ -1,47 +1,24 @@
-<!doctype html>
-<!--
- This page is shown when the extension button is clicked, because the
- "browser_action" field in manifest.json contains the "default_popup" key with
- value "popup.html".
- -->
 <html>
-  <head>
-    <script src="popup.js"></script>
-    <title>Getting Started Extension's Popup</title>
-    <style type="text/css">
-      body {
-        margin: 10px;
-        white-space: nowrap;
-      }
+    <head>
+        <script src="popup.js"></script>
+        <link rel="stylesheet" type="text/css" href="popup.css">
+        <title>Getting Started Extension's Popup</title>
+    </head>
 
-      h1 {
-        font-size: 15px;
-      }
+    <body>
+        <select id="_input_type_dropdown" class="input_type_dropdown">
+            <option value="container highlighter">container highlighter</option>
+            <option value="text area">text area</option>
+        </select>
 
-      #container {
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-      }
-    </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-    -->
-    
-  </head>
-
-  <body>
-    <h2>Selected Text</h2>
-    <h1>Copy and paste the selected text below</h1>
-    <div id="container">
-        <p>
-            <textarea id="_input_textarea" rows="29" cols="50"></textarea>    
-        </p>        
-    </div>
-    <input id = "_ok_button" type="button" value="OK">
-  </body>
+        <div id="_textarea_option" class="textarea_option">
+            <h1>Copy and paste text and press OK</h1>
+            <div id="container">
+                <p>
+                    <textarea id="_input_textarea" class="input_textarea" rows="29" cols="50"></textarea>
+                </p>
+            </div>
+            <input id = "_ok_button" type="button" value="OK">
+        </div>
+    </body>
 </html>

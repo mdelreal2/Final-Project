@@ -6,6 +6,33 @@ function loadSideBarContainerReadability()
     sideBarContainer.className = "side_bar_container";
     sideBarContainer.style.className = "div.side_bar_container";
 
+    //creating the next line button to place inside the navigation button container
+    var nextLineButton = document.createElement("input");
+    nextLineButton.type = "button";
+    nextLineButton.id = "_next_line_button";
+    nextLineButton.className = "next_line_button";
+    nextLineButton.value = "Next Line";
+    nextLineButton.style.className = "input.next_line_button";
+    nextLineButton.addEventListener("click", function(){readabilityNextLine()});
+
+    //creating the previous line button to place inside the navigation button container
+    var previousLineButton = document.createElement("input");
+    previousLineButton.type = "button";
+    previousLineButton.id = "_previous_line_button";
+    previousLineButton.className = "previous_line_button";
+    previousLineButton.value = "Past Line";
+    previousLineButton.style.className = "input.previous_line_button";
+    previousLineButton.addEventListener("click", function(){readabilityPastLine()});
+    
+    //adding reset button
+    var readabilityResetButton = document.createElement("input");
+    readabilityResetButton.type = "button";
+    readabilityResetButton.id = "_readibility_reset_button";
+    readabilityResetButton.className = "readibility_reset_button";
+    readabilityResetButton.value = "reset";
+    readabilityResetButton.style.className = "input.reset_button";
+    readabilityResetButton.addEventListener("click", function(){resetReadabilityLineNumber()});
+    
     //creating the settings icon image to go at the top of the side bar container
     var settingsIconImage = document.createElement("img");
     settingsIconImage.id = "_settings_icon_image";
@@ -39,7 +66,7 @@ function loadSideBarContainerReadability()
     optionsFeaturesDivider.className = "options_features_divider";
     optionsFeaturesDivider.style.className = "hr.options_features_divider";
 
-    //creating the features for the current state 
+    //creating the features for the current state
     var lineHighlightingLabel = document.createElement("p");
     lineHighlightingLabel.id = "_line_highlighting_label";
     lineHighlightingLabel.className = "features_label line_highlighting_label";
@@ -54,35 +81,23 @@ function loadSideBarContainerReadability()
     lineHighlightingCheckbox.className = "features_checkbox line_highlighting_checkbox";
     lineHighlightingCheckbox.style.className = "input.features_checkbox";
 
-    var singleWordHighlightingLabel = document.createElement("p");
-    singleWordHighlightingLabel.id = "_single_word_highlighting_label";
-    singleWordHighlightingLabel.className = "features_label single_word_highlighting_label";
-    singleWordHighlightingLabel.innerHTML = "Single Word Highlighting";
-    singleWordHighlightingLabel.style.className = "p.features_label";
 
-    var singleWordHighlightingCheckbox = document.createElement("input");
-    singleWordHighlightingCheckbox.type = "checkbox";
-    singleWordHighlightingCheckbox.id = "_single_word_highlighting_checkbox";
-    singleWordHighlightingCheckbox.className = "features_checkbox single_word_highlighting_checkbox";
-    singleWordHighlightingCheckbox.style.className = "input.features_checkbox";
-    
-    singleWordHighlightingCheckbox.addEventListener("change", function(){
-        if (singleWordHighlightingCheckbox.checked){
-            document.getElementById("_navigation_button_container").style.display = "block";
-        }
-        else if (!singleWordHighlightingCheckbox.checked && !lineHighlightingCheckbox.checked)
-        {
-            document.getElementById("_navigation_button_container").style.display = "none";
-        }
-    });
 
     lineHighlightingCheckbox.addEventListener("change", function(){
         if (lineHighlightingCheckbox.checked){
-            document.getElementById("_navigation_button_container").style.display = "block";
+            // document.getElementById("_navigation_button_container").style.display = "block";
+            document.getElementById("_next_line_button").style.display = "block";
+            document.getElementById("_previous_line_button").style.display = "block";
+            document.getElementById("_readibility_reset_button").style.display = "block";
+            document.getElementById("_highlighting_line").style.display = "block";
         }
-        else if (!lineHighlightingCheckbox.checked && !singleWordHighlightingCheckbox.checked)
+        else
         {
-            document.getElementById("_navigation_button_container").style.display = "none";
+            // document.getElementById("_navigation_button_container").style.display = "none";
+            document.getElementById("_next_line_button").style.display = "none";
+            document.getElementById("_previous_line_button").style.display = "none";
+            document.getElementById("_highlighting_line").style.display = "none";
+            document.getElementById("_readibility_reset_button").style.display = "none";
         }
     });
 
@@ -98,8 +113,9 @@ function loadSideBarContainerReadability()
     sideBarContainer.appendChild(document.createElement("br"));
     sideBarContainer.appendChild(document.createElement("br"));
     sideBarContainer.appendChild(document.createElement("br"));
-    sideBarContainer.appendChild(singleWordHighlightingLabel);
-    sideBarContainer.appendChild(singleWordHighlightingCheckbox);
+    sideBarContainer.appendChild(nextLineButton);
+    sideBarContainer.appendChild(previousLineButton);
+    sideBarContainer.appendChild(readabilityResetButton);
 }
 
 function loadSideBarContainerSpeedReader()
@@ -143,7 +159,7 @@ function loadSideBarContainerSpeedReader()
     optionsFeaturesDivider.className = "options_features_divider";
     optionsFeaturesDivider.style.className = "hr.options_features_divider";
 
-    ///////////////creating the features for the current state 
+    ///////////////creating the features for the current state
     var hideControlButtonsContainerLabel = document.createElement("p");
     hideControlButtonsContainerLabel.innerHTML = "Hide Controls";
     hideControlButtonsContainerLabel.id = "_hide_control_buttons_container_label";

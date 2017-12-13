@@ -1,7 +1,20 @@
+/*
+This file is loaded once the popup.js file makes a call to create a new tab loaded with the 'index.html' file
+
+This file handles the load order for all the elements in the program and is the source for functions that are used throughout the program
+*/
+
+//a global string that will contain either "READABILITY" or "SPEED_READER" and will be used to tell the program which elements to load and functionality to carry out
 var readingState = "";
+
+//constant strings that will be used to set the 'readingState' variable
 const READABILITY = "READABILITY";
 const SPEED_READER = "SPEED_READER";
 
+//a global variable that will store the data the user entered to get into the application and is retrieved through localstorage
+var USER_INPUT;
+
+//a global hashmap that keeps track of all the settings that the user has access to during the lifetime of the application
 var userSettings = {
     readabilityLineNumber: 0,
     readabilityFont: "Arial",
@@ -9,23 +22,21 @@ var userSettings = {
     readabilityTextColor: "Black",
     readabilityBackgroundColor: "Grey",
     readabilityLineSpacing: "1.0",
-    readabilityToggleHotkeys: false,
-    readabilityPastWordMapping: 37,
-    readabilityNextWordMapping: 39,
     readabilityPastLineMapping: 38,
     readabilityNextLineMapping: 40,
     
-    speedReaderWPM: 400,
+    speedReaderWPM: 240,
+    speedReaderInterval:0,
     speedReaderWordNumber: 0,
     speedReaderFont: "Arial",
-    speedReaderFontSize: "24px",
+    speedReaderFontSize: "48px",
     speedReaderTextColor: "White",
     speedReaderBackgroundColor: "Black",
-    speedReaderToggleHotkeys: false,
+    ToggleHotkeys: true,
     speedReaderPlayAndPauseMapping: 32,
-    speedReaderResetMapping: 82,
     speedReaderDecrementWPMMapping: 37,
-    speedReaderIncrementWPMMapping: 39 
+    speedReaderIncrementWPMMapping: 39,
+    ResetMapping: 82,
 };
 
 //function that will be called as soon as the page loads. Will be used to set the text obtained by the user into the '_output_textarea'
@@ -38,6 +49,12 @@ window.onload = function()
 
     readingState = READABILITY;
 
+    var data = JSON.parse(localStorage.getItem("userInput"));
+    //data = data.replace(/"+/g, '');
+    data = data.replace(/\\t+/g, '');
+    data = data.replace(/\\n+/g, '');
+    data = data.split(" ");
+    USER_INPUT = data;
     loadAllElements();
 }
 
@@ -52,7 +69,7 @@ function loadAllElements()
         body.removeChild(body.lastChild);
     }
 
-    //load the document with all the elements that are part of the current state of the program 
+    //load the document with all the elements that are part of the current state of the program
     loadMainOuputContainer();
     loadFeaturesContainers();
     loadSideBarContainer();
@@ -193,4 +210,51 @@ function loadModalSettingsContainer()
     {
         loadModalSettingsContainerSpeedReader();
     }
+}
+
+function drawHighlightingLine()
+{
+    var highlightingLine = document.getElementById("_highlighting_line");
+
+    var heightAsNumber = parseInt(userSettings.readabilityFontSize);
+    var heightFromLineSpacing = userSettings.readabilityLineSpacing;
+    
+    var margin;
+    
+    if (heightFromLineSpacing == 1.0)
+    {
+        margin = ((heightAsNumber * userSettings.readabilityLineNumber * heightFromLineSpacing).toString() + "px");
+    }
+    
+    else if (heightFromLineSpacing == 1.5)
+    {
+        margin = (((heightAsNumber * userSettings.readabilityLineNumber * heightFromLineSpacing) + (heightAsNumber / 2 / heightFromLineSpacing)).toString() + "px");
+    }
+    
+    else if (heightFromLineSpacing == 2.0)
+    {
+        margin = (((heightAsNumber * userSettings.readabilityLineNumber * heightFromLineSpacing) + (heightAsNumber / 2)).toString() + "px");
+    }
+    
+    else if (heightFromLineSpacing == 3.0)
+    {
+        margin = (((heightAsNumber * userSettings.readabilityLineNumber * heightFromLineSpacing) + (heightAsNumber * 3 / heightFromLineSpacing)).toString() + "px");
+    }
+    
+  
+    highlightingLine.style.height = heightAsNumber;
+    highlightingLine.style.marginTop = margin;
+}
+
+function getNextLinePosition()
+{
+    var highlightingLine = document.getElementById("_highlighting_line");
+    
+    var heightAsNumber = parseInt(userSettings.readabilityFontSize);
+    var heightFromLineSpacing = userSettings.readabilityLineSpacing;
+
+    return {
+        height: heightAsNumber,
+        heightFromLineSpacing: heightFromLineSpacing
+    };
 }

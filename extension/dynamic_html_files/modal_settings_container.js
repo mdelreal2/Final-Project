@@ -21,24 +21,35 @@ function loadModalSettingsContainerReadability()
     applySettingsButton.id = "_apply_settings_button";
     applySettingsButton.className = "apply_settings_button";
     applySettingsButton.style.className = "input.apply_settings_button";
-
     applySettingsButton.addEventListener("click", function(){
         var arrayOfStyles = Object.keys(changedSettingMap);
         var outputTextarea = document.getElementById("_output_textarea");
         for (var i = 0; i < arrayOfStyles.length; i++)
         {
-            //instead of having the 'changedSettingMap' have keys of the same element on the document,
-            //it is now given string versions of namespaces that the settings will aim to change and values
-            //are set to what the setting will be set to. In js you can call methods and access namespace variables 
-            //through the following syntax which is used to dynamically set all of the settings the user changed
-            outputTextarea["style"][arrayOfStyles[i]] = changedSettingMap[arrayOfStyles[i]];
-                //as opposed to a static namespace access of outputTextarea.style.fontFamily = changedSettingMap[arrayOfStyles[i]];
-            //where we would need as many lines like the one above for each possible setting and would have no efficient way of 
-            //only having certain static namespaces be called. With the user possibly only wanting 1 or no changes and having to 
-            //reset all of the settings.
+            if (arrayOfStyles[i] == "backgroundColor")
+            {
+                var mainOutputContainer = document.getElementById("_main_output_container");
+                mainOutputContainer["style"][arrayOfStyles[i]] = changedSettingMap[arrayOfStyles[i]];
+            }
+            else
+            {
+                //instead of having the 'changedSettingMap' have keys of the same element on the document,
+                //it is now given string versions of namespaces that the settings will aim to change and values
+                //are set to what the setting will be set to. In js you can call methods and access namespace variables
+                //through the following syntax which is used to dynamically set all of the settings the user changed
+                outputTextarea["style"][arrayOfStyles[i]] = changedSettingMap[arrayOfStyles[i]];
+                    //as opposed to a static namespace access of outputTextarea.style.fontFamily = changedSettingMap[arrayOfStyles[i]];
+                //where we would need as many lines like the one above for each possible setting and would have no efficient way of
+                //only having certain static namespaces be called. With the user possibly only wanting 1 or no changes and having to
+                //reset all of the settings.
+            }
         }
+        //redraw highlighting line so that it will coincide with the changed settings
+        drawHighlightingLine();
         //reset the map of all the settings that needed to be changed so they can't be changed unless the user wants to again
-        delete changedSettingMap;
+        for (var i in changedSettingMap) {
+            delete changedSettingMap[i];
+        }
     });
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -265,9 +276,13 @@ function loadModalSettingsContainerReadability()
     toggleHotkeysSettingCheckbox.id = "_toggle_hot_keys_checkbox";
     toggleHotkeysSettingCheckbox.className = "toggle_hot_keys_checkbox";
     toggleHotkeysSettingCheckbox.style.className = "input.toggle_hot_keys_checkbox";
+    toggleHotkeysSettingCheckbox.checked = true;
+    
+    var hotkeysInstructions = document.createElement("div")
+    
     toggleHotkeysSettingCheckbox.addEventListener("change", function(){
         var value = toggleHotkeysSettingCheckbox.checked;
-        userSettings.readabilityToggleHotkeys = value;
+        userSettings.ToggleHotkeys = value;
         //doesn't affect anything in the textarea ouput so we won't put it into the changedSettingMap
     });
 
@@ -355,7 +370,9 @@ function loadModalSettingsContainerReadability()
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     //setting initial value
-    toggleHotkeysSettingCheckbox.checked = userSettings.readabilityToggleHotkeys;
+    toggleHotkeysSettingCheckbox.checked = userSettings.ToggleHotkeys;
+  
+    modalSettingsContent.appendChild(hotkeysInstructions);
 }
 
 function loadModalSettingsContainerSpeedReader()
@@ -381,13 +398,15 @@ function loadModalSettingsContainerSpeedReader()
     applySettingsButton.style.className = "input.apply_settings_button";
     applySettingsButton.addEventListener("click", function(){
         var arrayOfStyles = Object.keys(changedSettingMap);
-        var speedReaderOutputTextarea = document.getElementById("_speed_reader_output_textarea");
+        var speedReaderOutputContainer = document.getElementById("_speed_reader_output_container");
         for (var i = 0; i < arrayOfStyles.length; i++)
         {
-            speedReaderOutputTextarea["style"][arrayOfStyles[i]] = changedSettingMap[arrayOfStyles[i]];
+            speedReaderOutputContainer["style"][arrayOfStyles[i]] = changedSettingMap[arrayOfStyles[i]];
         }
         //reset the map of all the settings that needed to be changed so they can't be changed unless the user wants to again
-        delete changedSettingMap;
+        for (var i in changedSettingMap) {
+            delete changedSettingMap[i];
+        }
     });
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -457,33 +476,33 @@ function loadModalSettingsContainerSpeedReader()
 
     //font size 1
     var tenFont = document.createElement("option");
-    tenFont.value = "10px";
-    tenFont.innerHTML = "10";
+    tenFont.value = "48px";
+    tenFont.innerHTML = "48";
 
     //font size 2
     var twelveFont = document.createElement("option");
-    twelveFont.value = "12px";
-    twelveFont.innerHTML = "12";
+    twelveFont.value = "54px";
+    twelveFont.innerHTML = "54";
 
     //font size 3
     var fourteenFont = document.createElement("option");
-    fourteenFont.value = "14px";
-    fourteenFont.innerHTML = "14";
+    fourteenFont.value = "60px";
+    fourteenFont.innerHTML = "60";
 
     //font size 4
     var eighteenFont = document.createElement("option");
-    eighteenFont.value = "18px";
-    eighteenFont.innerHTML = "18";
+    eighteenFont.value = "72px";
+    eighteenFont.innerHTML = "72";
 
     //font size 5
     var twentyFont = document.createElement("option");
-    twentyFont.value = "20px";
-    twentyFont.innerHTML = "20";
+    twentyFont.value = "78px";
+    twentyFont.innerHTML = "78";
 
     //font size 6
     var twentyfourFont = document.createElement("option");
-    twentyfourFont.value = "24px";
-    twentyfourFont.innerHTML = "24";
+    twentyfourFont.value = "86px";
+    twentyfourFont.innerHTML = "86";
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -570,9 +589,12 @@ function loadModalSettingsContainerSpeedReader()
     toggleHotkeysSettingCheckbox.id = "_toggle_hot_keys_checkbox";
     toggleHotkeysSettingCheckbox.className = "toggle_hot_keys_checkbox";
     toggleHotkeysSettingCheckbox.style.className = "input.toggle_hot_keys_checkbox";
+  
+    var hotkeysInstructions = document.createElement("div");
+  
     toggleHotkeysSettingCheckbox.addEventListener("change", function(){
         var value = toggleHotkeysSettingCheckbox.checked;
-        userSettings.speedReaderToggleHotkeys = value;
+        userSettings.ToggleHotkeys = value;
         //doesn't affect anything in the textarea ouput so we won't put it into the changedSettingMap
     });
 
@@ -644,7 +666,7 @@ function loadModalSettingsContainerSpeedReader()
     modalSettingsContent.appendChild(toggleHotkeysSettingLabel);
     modalSettingsContent.appendChild(toggleHotkeysSettingCheckbox);
     //setting initial value
-    toggleHotkeysSettingCheckbox.value = userSettings.speedReaderToggleHotkeys;
+    toggleHotkeysSettingCheckbox.checked = userSettings.ToggleHotkeys;
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
     modalSettingsContent.appendChild(document.createElement("br"));
