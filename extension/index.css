@@ -1,5 +1,5 @@
 body {
-    background-color: rgba(6, 4, 87, 0.9);
+    background-color: rgba(38, 53, 83, 0.9);
 }
 
 /*
@@ -26,7 +26,7 @@ div.highlighting_line {
     z-index: 0;
     box-sizing: border-box;
     width: 100%;
-    background-color: yellow;
+    background-color: rgba(255, 255, 0, .5);
     margin-top: 0px;
 }
 
@@ -56,7 +56,7 @@ input.next_line_button {
     height: 50px;
     width: 100%;
     font-size: 14px;
-    background-color: #03ADF0;
+    background-color: rgb(0, 123, 255);
 }
   
 input.previous_line_button {
@@ -66,7 +66,7 @@ input.previous_line_button {
     width: 100%;
     height: 50px;
     font-size: 14px;
-    background-color: #03ADF0;
+    background-color: rgb(0, 123, 255);
 }
 
 input.readibility_reset_button {
@@ -77,7 +77,7 @@ input.readibility_reset_button {
     width: 100%;
     height: 50px;
     font-size: 14px;
-    background-color: #002FFF;
+    background-color: rgb(0, 84, 162);
 }
 
 /*
@@ -224,7 +224,7 @@ input.play_and_pause_button {
     bottom: 55%;
     right: 39%;
     font-size: 16px;
-    background-color: #002FFF
+    background-color: rgb(0, 123, 255);
 }
 
 input.reset_button {
@@ -234,7 +234,7 @@ input.reset_button {
     bottom: 55%;
     left: 29%;
     font-size: 16px;
-    background-color: #002FFF
+    background-color: rgb(0, 123, 255);
 }
 
 input.increase_speed_button {
@@ -244,7 +244,7 @@ input.increase_speed_button {
     bottom: 6%;
     right: 39%;
     font-size: 18px;
-    background-color: #002FFF
+    background-color: rgb(0, 123, 255);
 }
 
 input.decrease_speed_button {
@@ -254,7 +254,7 @@ input.decrease_speed_button {
     bottom: 6%;
     left: 29%;
     font-size: 18px;
-    background-color: #002FFF
+    background-color: rgb(0, 123, 255);
 }
 
 p.speed_output_label {
